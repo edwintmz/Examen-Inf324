@@ -1,0 +1,51 @@
+body {
+    background-image: url(../img/fondo.gif);
+    font-family: 'Open Sans', sans-serif;
+}
+
+.fondo{
+    background-color: rgba(11, 235, 85, 0.244);
+    width: 430px;
+    height: 350px;
+    padding-top: 5px;
+    margin: 10% 30%;
+}
+
+h1{
+    text-align: center;
+    font-size: 35px;
+}
+
+.login {
+    width: 400px;
+    margin: 16px auto;
+    font-size: 16px;
+}
+
+.login-container {
+    background: #ebebeb;
+    padding: 12px;
+}
+
+.login input {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    padding: 16px;
+    font-size: 1.2em;
+    border: 0 solid white;
+}
+
+.login input[type="submit"] {
+    background: rgb(34, 221, 205);
+    border-color: transparent;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.login input[type="submit"]:hover {
+    background: #17c;
+}
