@@ -1,0 +1,60 @@
+<?php
+    session_start();
+    if(!isset($_SESSION["usuario"])){
+        header("location:../index.html");
+    }
+    echo "<div style='width: 95%;height: 100px; margin-left: 2.5%; display: flex;''>";
+        echo "<div style='width: 80%; height: 70px;color: #fff; background-color: rgba(37, 24, 226, 0.925); margin-left: 2.5% 2.5% 5%;'>";
+            echo "<h1>Usuario: " . $_SESSION['usuario'] . "</h1>";
+        echo "</div>";
+        echo "<div style='width: 20%; height: 70px; color: #fff; background-color: rgba(24, 226, 85, 0.925); margin-left: 0.5%; text-decoration: none;'>";
+            echo "<a href='terminar.php'><h1>Terminar</h1></a>";
+        echo "</div>";
+    echo "</div>";
+    echo "<h1 align ='center'>BIENVENIDO ESTUDIANTE</h1>";
+
+    $us = $_SESSION['usuario'];
+	try{
+		$base = new PDO('mysql:host=localhost; dbname=academico_edwintmz', 'root', '');
+		$base -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$base -> exec("SET CHARACTER SET utf8"); 
+        
+        //para el nombre del estudiante
+        $sq = "SELECT * FROM persona WHERE ci = (SELECT ci FROM acceso WHERE usuario = '$us')"; 
+		$resultad = $base -> prepare($sq);
+		$resultad -> execute(array());
+        $registr = $resultad -> fetch(PDO::FETCH_ASSOC);
+		$resultad -> closeCursor();
+        echo "<h1 align ='center'>". $registr['nom_com'] . "</h1>";
+
+        //para las notas del estudiante
+        $sql = "SELECT * FROM inscripcion WHERE ci = (SELECT ci FROM acceso WHERE usuario = '$us')"; 
+		$resultado = $base -> prepare($sql);
+		$resultado -> execute(array());
+
+        echo "<div align='center' style='width: 400px; margin: auto; border: 0px solid blue; padding; 30px;'>";
+        echo "<table align='center' style= 'font-size: 25px; background-color: rgba(24, 226, 85, 0.925); width: 380px; color: blue;'>";
+        echo "<tr>";
+        echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>Sigla</td>";
+        echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>Nota 1</td>";
+        echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>Nota 2</td>";
+        echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>Nota 3</td>";
+        echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>Nota F</td>";
+        echo "</tr>";
+
+        while($registro = $resultado -> fetch(PDO::FETCH_ASSOC)){
+            echo "<tr>";
+            echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>" . $registro['sigla'] . "</td>";
+            echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>" . $registro['nota1'] . "</td>";
+            echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>" . $registro['nota2'] . "</td>";
+            echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>" . $registro['nota3'] . "</td>";
+            echo "<td align='center' style= 'background-color: rgba(200, 200, 200, 1);'>" . $registro['notaf'] . "</td>";
+            echo "</tr>";
+        }
+		$resultado -> closeCursor();
+    echo "</table>";
+    echo "</div>";
+	} CATCH(Exception $e){
+		die('Error: ' . $e -> GetMessage());
+	} 
+?>
